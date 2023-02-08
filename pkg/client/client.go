@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"github.com/RTS-1989/go-censor-svc/pkg/middleware"
 
 	"github.com/RTS-1989/go-censor-svc/pkg/config"
 	"github.com/RTS-1989/go-censor-svc/pkg/pb"
@@ -14,7 +15,7 @@ type ServiceClient struct {
 
 func InitServiceClient(c *config.Config) pb.CensorServiceClient {
 	// using WithInsecure() because no SSL running
-	cc, err := grpc.Dial(c.CommentSvcUrl, grpc.WithInsecure())
+	cc, err := grpc.Dial(c.CommentSvcUrl, grpc.WithInsecure(), middleware.WithClientUnaryInterceptor())
 
 	if err != nil {
 		fmt.Println("Could not connect:", err)

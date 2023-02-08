@@ -5,6 +5,7 @@ import (
 	"github.com/RTS-1989/go-censor-svc/pkg/client"
 	"github.com/RTS-1989/go-censor-svc/pkg/config"
 	"github.com/RTS-1989/go-censor-svc/pkg/db"
+	"github.com/RTS-1989/go-censor-svc/pkg/middleware"
 	"github.com/RTS-1989/go-censor-svc/pkg/pb"
 	"github.com/RTS-1989/go-censor-svc/pkg/services"
 	"google.golang.org/grpc"
@@ -36,7 +37,7 @@ func main() {
 		C: cli,
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(grpc.UnaryInterceptor(middleware.LoggingInterceptor))
 
 	pb.RegisterCensorServiceServer(grpcServer, &s)
 
